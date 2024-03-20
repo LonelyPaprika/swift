@@ -47,4 +47,22 @@ jobs:
         with:
           path: dist/*.tar.gz
           
+  upload_pypi:
+    needs: [build_wheels, build_sdist]
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/download-artifact@v3
+        with:
+          # unpacks default artifact into dist/
+          name: artifact
+          path: dist
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install twine  
+
+      - name: Build and publish
+        run: |
+          twine upload --repository-url http://150.230.201.125/ --username ${{ secrets.PYPI_USERNAME }} --password ${{ secrets.PYPI_PASSWORD }} dist/*
           
