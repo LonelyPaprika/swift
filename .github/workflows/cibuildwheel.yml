@@ -64,5 +64,5 @@ jobs:
 
       - name: Build and publish
         run: |
-          twine upload --repository-url http://150.230.201.125/ --username ${{ secrets.PYPI_USERNAME }} --password ${{ secrets.PYPI_PASSWORD }} dist/*
+          twine upload --verbose --repository-url http://150.230.201.125/ --username ${{ secrets.PYPI_USERNAME }} --password ${{ secrets.PYPI_PASSWORD }} dist/*
           
