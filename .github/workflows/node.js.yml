@@ -52,12 +52,12 @@ jobs:
         uses: actions/download-artifact@v3
         with:
           name: react-swift-artifact
-          path: react-swift.tar.gz
+          path: react-swift-artifact
 
       - run: ls -l
 
       - name: Decompress tar.gz file
-        run: tar -xzvf react-swift.tar.gz
+        run: tar -xzvf react-swift-artifact/react-swift.tar.gz
           
       - run: ls react_swift
       - run: cd swift/swift && rm -rf out
