@@ -25,6 +25,9 @@ jobs:
     - name: Build react swift
       run: cd react-swift && npm run build
 
+    - name: Create archive
+      run: tar -czvf react-swift.tar.gz react-swift
+
     - uses: actions/upload-artifact@v3
       with:
         path: react-swift
@@ -56,10 +59,13 @@ jobs:
     
       - name: Build swift
         run: cd swift/next-swift && npm run build
+
+      - name: Create archive
+        run: cd swift/swift && tar -czvf out.tar.gz out
         
       - uses: actions/upload-artifact@v3
         with:
-          path: swift/swift/out
+          path: swift/swift/out.tar.gz
       
     
     
