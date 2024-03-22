@@ -18,20 +18,16 @@ jobs:
         
     - name: Download react-swift
       run: git clone https://github.com/LonelyPaprika/react-swift.git
-
-    - run: cd react-swift
     
     - name: Install Dependencies
-      run: npm install
-
-    - run: ls
+      run: cd react-swift && npm install
     
     - name: Build react swift
-      run: npm run build
+      run: cd react-swift && npm run build
 
     - uses: actions/upload-artifact@v3
       with:
-        path: dist
+        path: react-swift/dist
         
   build_swift:
     runs-on: macos-13
