@@ -47,21 +47,17 @@ jobs:
         with:
           path: swift
           
-      - run: ls
       - name: Download artifact
         uses: actions/download-artifact@v3
         with:
           name: react-swift-artifact
           path: react-swift-artifact
 
-      - run: ls -l
-
       - name: Decompress tar.gz file
         run: tar -xzvf react-swift-artifact/react-swift.tar.gz -C ./
-
-      - run: ls
-      - run: ls react-swift
+        
       - run: cd swift/swift && rm -rf out
+      - run: rm -rf react-swift-artifact
 
       - name: Install dependencies
         run: cd swift/next-swift && npm install
