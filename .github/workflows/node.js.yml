@@ -51,6 +51,8 @@ jobs:
           name: artifact
           path: react-swift.tar.gz
 
+      - run: ls -l
+
       - name: Decompress tar.gz file
         run: tar -xzvf react-swift.tar.gz
           
