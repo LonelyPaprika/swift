@@ -57,9 +57,10 @@ jobs:
       - run: ls -l
 
       - name: Decompress tar.gz file
-        run: tar -xzvf react-swift-artifact/react-swift.tar.gz -C react-swift
-          
-      - run: ls react_swift
+        run: mkdir react-swift && tar -xzvf react-swift-artifact/react-swift.tar.gz -C react-swift
+
+      - run: ls
+      - run: ls react-swift
       - run: cd swift/swift && rm -rf out
 
       - name: Install dependencies
