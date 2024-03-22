@@ -15,16 +15,14 @@ jobs:
       uses: actions/setup-node@v4
       with:
         node-version: '15'
-
-    - run: ls
         
     - name: Download react-swift
       run: git clone https://github.com/LonelyPaprika/react-swift.git
 
-    - run: ls 
+    - run: cd react-swift
     
-    - name: Change Directory and Install Dependencies
-      run: cd react-swift && npm install
+    - name: Install Dependencies
+      run: npm install
 
     - run: ls
     
@@ -39,6 +37,7 @@ jobs:
     runs-on: macos-13
     needs: build_react_swift
     steps:
+      - uses: actions/checkout@v3
       - uses: actions/download-artifact@v3
         with:
           name: artifact
