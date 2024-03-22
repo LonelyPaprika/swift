@@ -33,16 +33,18 @@ jobs:
     runs-on: macos-13
     needs: build_react_swift
     steps:
-      - uses: actions/checkout@v3
-      - uses: actions/download-artifact@v3
-        with:
-          name: artifact
-          path: react_swift/dist
-
       - name: Setup Node
         uses: actions/setup-node@v4
         with:
           node-version: '15'
+          
+      - uses: actions/checkout@v3
+      - run: ls
+      - uses: actions/download-artifact@v3
+        with:
+          name: artifact
+          path: react_swift/dist
+      - run: ls
 
       - name: Install dependencies
         run: npm install
