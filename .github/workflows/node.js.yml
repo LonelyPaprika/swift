@@ -39,22 +39,25 @@ jobs:
           node-version: '15'
           
       - uses: actions/checkout@v3
+        with:
+          path: swift
       - run: ls
       - uses: actions/download-artifact@v3
         with:
           name: artifact
           path: react_swift/dist
       - run: ls
+      - run: cd swift/swift && rm -rf out
 
       - name: Install dependencies
-        run: npm install
+        run: cd swift/next-swift && npm install
     
       - name: Build swift
-        run: npm run build
+        run: cd swift/next-swift && npm run build
         
       - uses: actions/upload-artifact@v3
         with:
-          path: out
+          path: swift/swift/out
       
     
     
