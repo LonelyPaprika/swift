@@ -1,0 +1,56 @@
+name: Node.js CI
+
+on:
+  push:
+    branches: [ "main-dev" ]
+  pull_request:
+    branches: [ "main-dev" ]
+
+jobs:
+  build_react_swift:
+    runs-on: macos-13
+
+    steps:
+    - name: Setup Node
+      uses: actions/setup-node@v4
+      with:
+        node-version: '15'
+        
+    - name: Download react-swift
+      run: git clone https://github.com/LonelyPaprika/react-swift.git
+    
+    - name: Change Directory and Install Dependencies
+      run: cd react-swift && npm install
+
+    - name: Build react swift
+      run: npm run build
+
+    - uses: actions/upload-artifact@v3
+      with:
+        path: dist
+        
+  build_swift:
+    runs-on: macos-13
+    steps:
+      - uses: actions/download-artifact@v3
+        with:
+          name: artifact
+          path: react_swift/dist
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '15'
+
+      - name: Install dependencies
+        run: npm install
+    
+      - name: Build swift
+        run: npm run build
+        
+      - uses: actions/upload-artifact@v3
+        with:
+          path: out
+      
+    
+    
