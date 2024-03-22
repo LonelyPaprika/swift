@@ -57,7 +57,7 @@ jobs:
       - run: ls -l
 
       - name: Decompress tar.gz file
-        run: tar -xzvf react-swift-artifact/react-swift.tar.gz
+        run: tar -xzvf react-swift-artifact/react-swift.tar.gz -C react-swift
           
       - run: ls react_swift
       - run: cd swift/swift && rm -rf out
