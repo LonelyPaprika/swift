@@ -31,6 +31,7 @@ jobs:
         
   build_swift:
     runs-on: macos-13
+    needs: build_react_swift
     steps:
       - uses: actions/download-artifact@v3
         with:
