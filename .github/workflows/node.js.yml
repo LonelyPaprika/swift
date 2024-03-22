@@ -27,7 +27,7 @@ jobs:
 
     - uses: actions/upload-artifact@v3
       with:
-        path: react-swift/dist
+        path: react-swift
         
   build_swift:
     runs-on: macos-13
@@ -41,12 +41,14 @@ jobs:
       - uses: actions/checkout@v3
         with:
           path: swift
+          
       - run: ls
       - uses: actions/download-artifact@v3
         with:
           name: artifact
-          path: react_swift/dist
-      - run: ls
+          path: react_swift
+          
+      - run: ls react_swift
       - run: cd swift/swift && rm -rf out
 
       - name: Install dependencies
