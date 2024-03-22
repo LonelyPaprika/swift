@@ -28,8 +28,10 @@ jobs:
     - name: Create archive
       run: tar -czvf react-swift.tar.gz react-swift
 
-    - uses: actions/upload-artifact@v3
+    - name: Upload Artifact
+      uses: actions/upload-artifact@v3
       with:
+        name: react-swift-artifact
         path: react-swift.tar.gz
         
   build_swift:
