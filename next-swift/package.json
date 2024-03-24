@@ -17,7 +17,7 @@
     "next": "^13.0.0",
     "react": "^18.0.0",
     "react-dom": "^18.0.0",
-    "react-swift": "file:../../react-swift",
+    "@lonelypaprika/react-swift": "0.1.1",
     "sass": "^1.32.7",
     "three": "^0.149.0",
     "three-orbit-controls": "^82.1.0"
