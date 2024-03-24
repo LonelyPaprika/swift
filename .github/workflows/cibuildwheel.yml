@@ -29,10 +29,10 @@ jobs:
       - name: Build swift
         run: cd next-swift && npm run build
 
-      - name: Create archive
+      - name: Create swift archive
         run: tar -czvf swift.tar.gz .
 
-      - name: Upload Artifact
+      - name: Upload swift-artifact
         uses: actions/upload-artifact@v3
         with:
           name: swift-artifact
@@ -58,13 +58,13 @@ jobs:
         with:
           platforms: arm64
       
-      - name: Download artifact
+      - name: Download swift-artifact
         uses: actions/download-artifact@v3
         with:
           name: swift-artifact
           path: .
 
-      - name: Decompress tar.gz file
+      - name: Decompress swift.tar.gz
         run: tar -xzvf swift.tar.gz -C .
 
       - name: Build wheels
@@ -79,13 +79,13 @@ jobs:
     name: Build source distribution
     runs-on: ubuntu-latest
     steps:
-      - name: Download artifact
+      - name: Download swift-artifact
         uses: actions/download-artifact@v3
         with:
           name: swift-artifact
           path: .
 
-      - name: Decompress tar.gz file
+      - name: Decompress swift.tar.gz
         run: tar -xzvf swift.tar.gz -C .
 
       - name: Build sdist
