@@ -2,7 +2,8 @@ import { useEffect, useRef, lazy } from 'react'
 import Head from 'next/head'
 import styles from '../styles/Home.module.css'
 // import Swift from '../components/Swift'
-import Swift from 'react-swift'
+// import Swift from 'react-swift'
+import Swift from '@lonelypaprika/react-swift'
 
 const Home = () => {
     // const pc = useRef<RTCPeerConnection>(null)
