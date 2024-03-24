@@ -6,6 +6,29 @@ on:
   workflow_dispatch:
 
 jobs:
+  build_swift:
+    runs-on: macos-13
+    permissions:
+      contents: read
+      packages: write
+    steps:
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '15'
+          registry-url: 'https://npm.pkg.github.com'
+          scope: '@lonelypaprika'
+          
+      - uses: actions/checkout@v4
+
+      - name: Install dependencies
+        run: cd next-swift && npm install
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_GET_GITHUB_PACKAGES }}
+      
+      - name: Build swift
+        run: cd next-swift && npm run build
+
   build_wheels:
     name: Build wheels on ${{ matrix.os }}
     runs-on: ${{ matrix.os }}
