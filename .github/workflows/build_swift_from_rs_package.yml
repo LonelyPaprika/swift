@@ -19,7 +19,7 @@ jobs:
           scope: '@lonelypaprika'
 
       - name: Authenticate with GitHub Packages
-        run: echo "//npm.pkg.github.com/:_authToken=${{ secrets.GITHUB_TOKEN }}" >> ~/.npmrc
+        run: echo "//npm.pkg.github.com/:_authToken=${{ secrets.NPM_GET_GITHUB_PACKAGES }}" >> ~/.npmrc
           
       - uses: actions/checkout@v4
       - run: ls
@@ -27,7 +27,7 @@ jobs:
       - name: Install dependencies
         run: cd next-swift && npm install
         env:
-          NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_GET_GITHUB_PACKAGES }}
     
       - name: Build swift
         run: cd next-swift && npm run build
