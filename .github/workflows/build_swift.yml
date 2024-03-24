@@ -2,7 +2,7 @@ name: Build swift ci
 
 on:
   push:
-    branches: [ "main-dev" ]
+    branches: [ "main-dev", "feature/*" ]
 
 jobs:
   build_swift:
