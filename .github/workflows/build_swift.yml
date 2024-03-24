@@ -3,74 +3,37 @@ name: Build swift ci
 on:
   push:
     branches: [ "main-dev" ]
-  pull_request:
-    branches: [ "main-dev" ]
 
 jobs:
-  build_react_swift:
-    runs-on: macos-13
-
-    steps:
-    - name: Setup Node
-      uses: actions/setup-node@v4
-      with:
-        node-version: '15'
-        
-    - name: Download react-swift
-      run: git clone https://github.com/LonelyPaprika/react-swift.git
-    
-    - name: Install Dependencies
-      run: cd react-swift && npm install
-    
-    - name: Build react swift
-      run: cd react-swift && npm run build
-
-    - name: Create archive
-      run: tar -czvf react-swift.tar.gz react-swift
-
-    - name: Upload Artifact
-      uses: actions/upload-artifact@v3
-      with:
-        name: react-swift-artifact
-        path: react-swift.tar.gz
-        
   build_swift:
     runs-on: macos-13
-    needs: build_react_swift
+    permissions:
+      contents: read
+      packages: write
     steps:
       - name: Setup Node
         uses: actions/setup-node@v4
         with:
           node-version: '15'
+          registry-url: 'https://npm.pkg.github.com'
+          scope: '@lonelypaprika'
           
-      - uses: actions/checkout@v3
-        with:
-          path: swift
-          
-      - name: Download artifact
-        uses: actions/download-artifact@v3
-        with:
-          name: react-swift-artifact
-          path: react-swift-artifact
-
-      - name: Decompress tar.gz file
-        run: tar -xzvf react-swift-artifact/react-swift.tar.gz -C ./
-        
-      - run: cd swift/swift && rm -rf out
-      - run: rm -rf react-swift-artifact
+      - uses: actions/checkout@v4
 
       - name: Install dependencies
-        run: cd swift/next-swift && npm install
-    
-      - name: Build swift
-        run: cd swift/next-swift && npm run build
-
-      - name: Create archive
-        run: cd swift/swift && tar -czvf out.tar.gz out
-        
-      - uses: actions/upload-artifact@v3
-        with:
-          path: swift/swift/out.tar.gz
+        run: cd next-swift && npm install
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_GET_GITHUB_PACKAGES }}
       
-    
-    
+      - name: Build swift
+        run: cd next-swift && npm run build
+
+      - name: Create swift archive
+        run: tar -czvf swift.tar.gz .
+
+      - name: Upload swift-artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: swift-artifact
+          path: swift.tar.gz
+      
