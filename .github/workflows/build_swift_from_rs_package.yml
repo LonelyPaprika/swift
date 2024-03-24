@@ -17,9 +17,6 @@ jobs:
           node-version: '15'
           registry-url: 'https://npm.pkg.github.com'
           scope: '@lonelypaprika'
-
-      - name: Authenticate with GitHub Packages
-        run: echo "//npm.pkg.github.com/:_authToken=${{ secrets.NPM_GET_GITHUB_PACKAGES }}" >> ~/.npmrc
           
       - uses: actions/checkout@v4
       - run: ls
