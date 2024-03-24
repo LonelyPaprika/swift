@@ -2,11 +2,44 @@ name: Build all Wheels
 
 on:
   release:
-    types: [created]
+    types: [published]
   workflow_dispatch:
 
 jobs:
+  build_swift:
+    runs-on: macos-13
+    permissions:
+      contents: read
+      packages: write
+    steps:
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '15'
+          registry-url: 'https://npm.pkg.github.com'
+          scope: '@lonelypaprika'
+          
+      - uses: actions/checkout@v4
+
+      - name: Install dependencies
+        run: cd next-swift && npm install
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_GET_GITHUB_PACKAGES }}
+      
+      - name: Build swift
+        run: cd next-swift && npm run build
+
+      - name: Create swift archive
+        run: tar -czvf swift.tar.gz .
+
+      - name: Upload swift-artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: swift-artifact
+          path: swift.tar.gz
+
   build_wheels:
+    needs: [build_swift]
     name: Build wheels on ${{ matrix.os }}
     runs-on: ${{ matrix.os }}
       
@@ -18,14 +51,21 @@ jobs:
             cibw_archs: "aarch64"
             
     steps:
-    
       # Set up emulation for arm on linux
       - name: Set up QEMU
         if: matrix.cibw_archs == 'aarch64'
         uses: docker/setup-qemu-action@v2
         with:
           platforms: arm64
-      - uses: actions/checkout@v3
+      
+      - name: Download swift-artifact
+        uses: actions/download-artifact@v3
+        with:
+          name: swift-artifact
+          path: .
+
+      - name: Decompress swift.tar.gz
+        run: tar -xzvf swift.tar.gz -C .
 
       - name: Build wheels
         uses: pypa/cibuildwheel@v2.11.3
@@ -35,10 +75,18 @@ jobs:
           path: ./wheelhouse/*.whl
 
   build_sdist:
+    needs: [build_swift]
     name: Build source distribution
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
+      - name: Download swift-artifact
+        uses: actions/download-artifact@v3
+        with:
+          name: swift-artifact
+          path: .
+
+      - name: Decompress swift.tar.gz
+        run: tar -xzvf swift.tar.gz -C .
 
       - name: Build sdist
         run: pipx run build --sdist
