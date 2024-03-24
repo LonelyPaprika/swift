@@ -30,6 +30,7 @@ jobs:
         run: cd next-swift && npm run build
 
   build_wheels:
+    needs: [build_swift]
     name: Build wheels on ${{ matrix.os }}
     runs-on: ${{ matrix.os }}
       
