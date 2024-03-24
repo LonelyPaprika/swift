@@ -7,6 +7,9 @@ on:
 jobs:   
   build_swift:
     runs-on: macos-13
+    permissions:
+      contents: read
+      packages: write
     steps:
       - name: Setup Node
         uses: actions/setup-node@v4
