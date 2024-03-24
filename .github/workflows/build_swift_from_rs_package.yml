@@ -24,7 +24,7 @@ jobs:
         run: cd next-swift && npm install
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_GET_GITHUB_PACKAGES }}
-      - run: cd next-swift && npm ls react-swift
+      - run: cd next-swift && npm ls
       
       - name: Build swift
         run: cd next-swift && npm run build
