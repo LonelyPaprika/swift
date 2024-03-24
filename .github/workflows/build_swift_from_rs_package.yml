@@ -20,6 +20,8 @@ jobs:
 
       - name: Install dependencies
         run: cd next-swift && npm install
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
     
       - name: Build swift
         run: cd next-swift && npm run build
