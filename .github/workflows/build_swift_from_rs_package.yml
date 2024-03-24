@@ -1,0 +1,26 @@
+name: Node.js CI
+
+on:
+  push:
+    branches: [ "feature/build_using_rs_package" ]
+    
+jobs:   
+  build_swift:
+    runs-on: macos-13
+    steps:
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '15'
+          registry-url: 'https://npm.pkg.github.com'
+          scope: '@lonelypaprika'
+          
+      - uses: actions/checkout@v4
+      - run: ls
+
+      - name: Install dependencies
+        run: cd next-swift && npm install
+    
+      - name: Build swift
+        run: cd next-swift && npm run build
+      - run: ls
